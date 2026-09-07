@@ -472,7 +472,6 @@ const FISH = [
 {
     vn: "Cá Chuột Xanh", en: "Blue Corydoras", img: "chuot_xanh_1.jpg", photo: true, price: "50.000đ",
     desc: "Cá Chuột Xanh (Brochis multiradiatus / Corydoras xanh) là dòng cá chuột đệm bể nổi bật với thân phủ ánh kim xanh thép óng ả toàn thân, vây lưng cao tương đối phát triển giúp cá trông đầy đặn hơn so với các dòng chuột phổ thông. Cá hiền lành, sống theo đàn, ăn tạp tầng đáy, thường năng động nhất vào buổi tối — nên nuôi nhóm từ 6 con trở lên để cá dạn và lên màu đẹp. Phù hợp bể thủy sinh cộng đồng, nước trung tính đến hơi mềm, 22–26°C.",
-    origin: "Nuôi phổ biến (Đông Nam Á)", size: "5–7 cm", promo: "Không có", contactText: "", combo: {10: 45000}, gallery: ["assets/img/chuot_xanh_1.jpg"], 
-        video: "https://www.facebook.com/reel/4592590964350336/"
+    origin: "Nuôi phổ biến (Đông Nam Á)", size: "5–7 cm", promo: "Không có", contactText: "", combo: {10: 45000}, gallery: ["assets/img/chuot_xanh_1.jpg"]
       }
 ].map(f => ({ ...f, src: (f.photo ? 'assets/img/' : SPR) + f.img, filter: f.hue ? `hue-rotate(${f.hue}deg) saturate(1.25)` : '' }));
