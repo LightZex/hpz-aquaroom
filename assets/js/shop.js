@@ -5,6 +5,16 @@
   const pager = document.getElementById('pager');
   if(!grid || typeof FISH === 'undefined') return;
 
+  FISH.forEach(function (f) {
+    const key = ((f.vn || '') + ' ' + (f.en || '')).toLowerCase();
+    if (!/checkered bard|checked bard|dicrossus/.test(key)) return;
+    f.vn = 'Cá Diếc Bàn cờ';
+    if (!f.en || /checked bard|checkered bard/i.test(f.en)) f.en = 'Dicrossus filamentosus';
+    f.img = 'checkered_bard.jpg';
+    f.src = 'assets/img/checkered_bard.jpg';
+    f.gallery = ['assets/img/checkered_bard.jpg'];
+  });
+
   const PER = 50;
   const CATEGORIES = [
     { id: 'all', label: 'Tất cả' },
@@ -115,7 +125,7 @@
     pager.innerHTML = `
       <button id="prev" ${page === 1 ? 'disabled' : ''}>← Trước</button>
       <span class="page-info">Trang ${page}/${pages} · ${filtered.length} cá</span>
-      <button id="next" ${page === pages ? 'disabled' : ''}>Sau →</button>`;
+      <button id="next" ${page === pages ? 'disabled' : ''}>Đến →</button>`;
     const prev = document.getElementById('prev');
     const next = document.getElementById('next');
     if(prev) prev.onclick = () => { if(page > 1){ page--; render(); } };
