@@ -1,126 +1,14 @@
 /* HPZ Aquaroom - catalogue: search + fish-system filters + pagination */
 (function(){
-  const grid = document.getElementById('fish-grid');
-  const search = document.getElementById('fish-search');
-  const pager = document.getElementById('pager');
-  if(!grid || typeof FISH === 'undefined') return;
-
-  const PER = 50;
-  const CATEGORIES = [
-    { id: 'all', label: 'Tất cả' },
-    { id: 'discus', label: 'Cá Đĩa' },
-    { id: 'stream', label: 'Cá Suối' },
-    { id: 'angelfish', label: 'Cá Thần Tiên' },
-    { id: 'cichlid', label: 'Cichlid' },
-    { id: 'bottom', label: 'Cá Tầng Đáy' },
-    { id: 'schooling', label: 'Cá Đàn / Cộng Đồng' },
-    { id: 'goldfish', label: 'Cá Vàng / Koi' }
-  ];
-
-  function textOf(f){ return `${f.vn || ''} ${f.en || ''} ${f.desc || ''}`.toLowerCase(); }
-  function systemOf(f){
-    const t = textOf(f);
-    if(/cá đĩa|đĩa |discus|symphysodon/.test(t)) return 'discus';
-    if(/thần tiên|angelfish|pterophyllum|altum|dantum/.test(t)) return 'angelfish';
-    if(/cá chuột|corydoras|pleco|lau kiếng|tỳ bà|bống|goby|botia|cá bám/.test(t)) return 'bottom';
-    if(/mương|zacco|opsariichthys|cá suối|rhino goby|danio|odessa barb/.test(t)) return 'stream';
-    if(/thè be|cichlid|severum|ram|parrotfish|kim thơm/.test(t)) return 'cichlid';
-    if(/cá vàng|goldfish|koi|ryukin|24k/.test(t)) return 'goldfish';
-    return 'schooling';
-  }
-
-  FISH.forEach(f => { f.system = f.system || systemOf(f); });
-
-  let activeSystem = 'all';
-  let filtered = FISH.slice();
-  let page = 1;
-
-  const vnd = n => (typeof n === 'string' ? n : n.toLocaleString('vi-VN') + '₫');
-
-  function installFilter(){
-    const toolbar = search && search.closest('.toolbar');
-    if(!toolbar || document.getElementById('fish-system-filter')) return;
-
-    const style = document.createElement('style');
-    style.textContent = `
-      .fish-system-filter{width:100%;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-      .fish-system-filter__label{display:block;color:var(--cyan);font-size:.9rem;font-weight:800;letter-spacing:.04em;margin-bottom:9px}
-      .fish-system-filter__buttons{display:flex;gap:8px;flex-wrap:wrap}
-      .fish-system-filter button{font:inherit;font-weight:700;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:8px 13px;cursor:pointer;transition:.2s}
-      .fish-system-filter button:hover{border-color:var(--cyan);transform:translateY(-1px)}
-      .fish-system-filter button.is-active{color:#04121d;background:linear-gradient(90deg,var(--cyan),var(--accent));border-color:transparent}
-      @media(max-width:640px){.fish-system-filter button{padding:7px 11px;font-size:.92rem}}
-    `;
-    document.head.appendChild(style);
-
-    const wrap = document.createElement('div');
-    wrap.className = 'fish-system-filter';
-    wrap.id = 'fish-system-filter';
-    wrap.innerHTML = `
-      <span class="fish-system-filter__label">PHÂN LOẠI HỆ CÁ</span>
-      <div class="fish-system-filter__buttons" role="group" aria-label="Phân loại hệ cá">
-        ${CATEGORIES.map(c => `<button type="button" data-system="${c.id}" class="${c.id === activeSystem ? 'is-active' : ''}">${c.label}</button>`).join('')}
-      </div>`;
-    toolbar.appendChild(wrap);
-
-    wrap.addEventListener('click', event => {
-      const button = event.target.closest('button[data-system]');
-      if(!button) return;
-      activeSystem = button.dataset.system;
-      wrap.querySelectorAll('button').forEach(b => b.classList.toggle('is-active', b === button));
-      page = 1;
-      applyFilters();
-    });
-  }
-
-  function applyFilters(){
-    const q = search ? search.value.trim().toLowerCase() : '';
-    filtered = FISH.filter(f => {
-      const matchesSystem = activeSystem === 'all' || f.system === activeSystem;
-      const matchesSearch = !q || `${f.vn || ''} ${f.en || ''}`.toLowerCase().includes(q);
-      return matchesSystem && matchesSearch;
-    });
-    render();
-  }
-
-  function cardHTML(f){
-    const style = f.filter ? ` style="filter:${f.filter}"` : '';
-    const category = CATEGORIES.find(c => c.id === f.system);
-    return `<a class="card" href="fish.html?fish=${encodeURIComponent(f.en)}">
-      <div class="ph">
-        <img class="fish-sprite${f.photo ? ' photo' : ''}" src="${f.src}" alt="${f.vn}" loading="lazy"${style}>
-      </div>
-      <div class="body">
-        <div class="vn">${f.vn}</div>
-        <div class="en">${f.en}</div>
-        <div class="price">${vnd(f.price || 0)}</div>
-        <div class="fish-system-tag">${category ? category.label : 'Cá cảnh'}</div>
-      </div>
-    </a>`;
-  }
-
-  function render(){
-    const pages = Math.max(1, Math.ceil(filtered.length / PER));
-    page = Math.min(page, pages);
-    const start = (page - 1) * PER;
-    const slice = filtered.slice(start, start + PER);
-    grid.innerHTML = slice.length ? slice.map(cardHTML).join('')
-      : `<p style="color:var(--muted);grid-column:1/-1">Chưa có cá phù hợp trong hệ này.</p>`;
-    pager.innerHTML = `
-      <button id="prev" ${page === 1 ? 'disabled' : ''}>← Trước</button>
-      <span class="page-info">Trang ${page}/${pages} · ${filtered.length} cá</span>
-      <button id="next" ${page === pages ? 'disabled' : ''}>Sau →</button>`;
-    const prev = document.getElementById('prev');
-    const next = document.getElementById('next');
-    if(prev) prev.onclick = () => { if(page > 1){ page--; render(); } };
-    if(next) next.onclick = () => { if(page < pages){ page++; render(); } };
-  }
-
-  const tagStyle = document.createElement('style');
-  tagStyle.textContent = `.fish-system-tag{display:inline-block;margin-top:9px;padding:3px 9px;border:1px solid var(--border);border-radius:999px;color:var(--cyan);font-size:.76rem;font-weight:800}`;
-  document.head.appendChild(tagStyle);
-
-  if(search) search.addEventListener('input', () => { page = 1; applyFilters(); });
-  installFilter();
-  applyFilters();
+  const grid=document.getElementById('fish-grid'),search=document.getElementById('fish-search'),pager=document.getElementById('pager');
+  if(!grid||typeof FISH==='undefined')return;
+  const PER=50,CATEGORIES=[['all','Tất cả'],['discus','Cá Đĩa'],['stream','Cá Suối'],['angelfish','Cá Thần Tiên'],['cichlid','Cichlid'],['bottom','Cá Tầng Đáy'],['schooling','Cá Đàn / Cộng Đồng'],['goldfish','Cá Vàng / Koi']];
+  const t=f=>`${f.vn||''} ${f.en||''} ${f.desc||''}`.toLowerCase();
+  function systemOf(f){const s=t(f);if(/longfin 24k|shortfin 24k|cá longfin 24k|cá shortfin 24k/.test(s))return'bottom';if(/cá đĩa|đĩa |discus|symphysodon/.test(s))return'discus';if(/thần tiên|angelfish|pterophyllum|altum|dantum/.test(s))return'angelfish';if(/cá chuột|corydoras|pleco|lau kiếng|tỳ bà|bống|goby|botia|cá bám/.test(s))return'bottom';if(/mương|zacco|opsariichthys|cá suối|rhino goby|danio|odessa barb/.test(s))return'stream';if(/thè be|cichlid|severum|ram|parrotfish|kim thơm/.test(s))return'cichlid';if(/cá vàng|goldfish|koi|ryukin|24k/.test(s))return'goldfish';return'schooling'}
+  FISH.forEach(f=>f.system=f.system||systemOf(f));let active='all',filtered=FISH.slice(),page=1;const vnd=n=>typeof n==='string'?n:n.toLocaleString('vi-VN')+'₫',label=id=>(CATEGORIES.find(c=>c[0]===id)||['','Cá cảnh'])[1];
+  const css=`.fish-system-filter{width:100%;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}.fish-system-filter__label{display:block;color:var(--cyan);font-size:.9rem;font-weight:800;letter-spacing:.04em;margin-bottom:9px}.fish-system-filter__buttons{display:flex;gap:8px;flex-wrap:wrap}.fish-system-filter button{font:inherit;font-weight:700;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:8px 13px;cursor:pointer}.fish-system-filter button.is-active{color:#04121d;background:linear-gradient(90deg,var(--cyan),var(--accent));border-color:transparent}.fish-system-tag{display:inline-block;margin-top:9px;padding:3px 9px;border:1px solid var(--border);border-radius:999px;color:var(--cyan);font-size:.76rem;font-weight:800}`;document.head.appendChild(Object.assign(document.createElement('style'),{textContent:css}));
+  function render(){const pages=Math.max(1,Math.ceil(filtered.length/PER));page=Math.min(page,pages);const slice=filtered.slice((page-1)*PER,page*PER);grid.innerHTML=slice.length?slice.map(f=>{const style=f.filter?` style="filter:${f.filter}"`:'';return`<a class="card" href="fish.html?fish=${encodeURIComponent(f.en)}"><div class="ph"><img class="fish-sprite${f.photo?' photo':''}" src="${f.src}" alt="${f.vn}" loading="lazy"${style}></div><div class="body"><div class="vn">${f.vn}</div><div class="en">${f.en}</div><div class="price">${vnd(f.price||0)}</div><div class="fish-system-tag">${label(f.system)}</div></div></a>`}).join(''):'<p style="color:var(--muted);grid-column:1/-1">Chưa có cá phù hợp trong hệ này.</p>';pager.innerHTML=`<button id="prev" ${page===1?'disabled':''}>← Trước</button><span class="page-info">Trang ${page}/${pages} · ${filtered.length} cá</span><button id="next" ${page===pages?'disabled':''}>Sau →</button>`;const prev=document.getElementById('prev'),next=document.getElementById('next');if(prev)prev.onclick=()=>{if(page>1){page--;render()}};if(next)next.onclick=()=>{if(page<pages){page++;render()}}}
+  function apply(){const q=search?search.value.trim().toLowerCase():'';filtered=FISH.filter(f=>(active==='all'||f.system===active)&&(!q||`${f.vn||''} ${f.en||''}`.toLowerCase().includes(q)));render()}
+  const toolbar=search&&search.closest('.toolbar');if(toolbar){const el=document.createElement('div');el.className='fish-system-filter';el.innerHTML=`<span class="fish-system-filter__label">PHÂN LOẠI HỆ CÁ</span><div class="fish-system-filter__buttons" role="group" aria-label="Phân loại hệ cá">${CATEGORIES.map(c=>`<button type="button" data-system="${c[0]}" class="${c[0]==='all'?'is-active':''}">${c[1]}</button>`).join('')}</div>`;toolbar.appendChild(el);el.onclick=e=>{const b=e.target.closest('button[data-system]');if(!b)return;active=b.dataset.system;el.querySelectorAll('button').forEach(x=>x.classList.toggle('is-active',x===b));page=1;apply()}}
+  if(search)search.oninput=()=>{page=1;apply()};apply();
 })();
