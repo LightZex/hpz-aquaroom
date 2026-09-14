@@ -458,9 +458,9 @@ const FISH = [
     gallery: ["assets/img/c_h_i_h_short_1.jpg"]
   },
 {
-    vn: "Cá Red Devil AB", en: "Red Devil AB", img: "c_a_red_devil_ab_moi_1.jpg", photo: true, price: "169.000đ",
+    vn: "Cá Thần tiên Red Devil AB", en: "Red Devil AB", img: "c_a_red_devil_ab_moi_1.jpg", photo: true, price: "169.000đ",
     desc: "Cá Red Devil AB là dòng cá cảnh cao cấp nổi bật với màu đỏ cam rực rỡ kết hợp vân loang bất đối xứng rất cá tính. Cá hiền, thích hợp bể rộng nhiều cây, ánh sáng dịu, nước sạch giàu oxy. Nên nuôi nhóm từ 5 con trở lên để cá dạn và lên màu đẹp.",
-    origin: "Lai tạo chọn lọc", size: "5–9 cm", promo: "Không có", contactText: "", combo: {},
+    origin: "Lai tạo chọn lọc", size: "5–6 cm", promo: "Không có", contactText: "", combo: {},
     gallery: ["assets/img/c_a_red_devil_ab_moi_1.jpg"]
   },
 {
