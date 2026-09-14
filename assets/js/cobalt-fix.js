@@ -4,11 +4,11 @@
   FISH.forEach(function (f) {
     const key = ((f.vn || '') + ' ' + (f.en || '')).toLowerCase();
     if (!/cá đĩa xanh cobalt|cobalt blue discus|xanh cobalt/.test(key)) return;
-    f.img = 'xanh coban 1.jpg';
-    f.src = 'assets/img/xanh coban 1.jpg';
+    f.img = 'c_a_xanh_cobalt_1.jpg';
+    f.src = 'assets/img/c_a_xanh_cobalt_1.jpg';
     f.gallery = [
-      'assets/img/xanh coban 1.jpg',
-      'assets/img/xanh coban 2.webp'
+      'assets/img/c_a_xanh_cobalt_1.jpg',
+      'assets/img/c_a_xanh_cobalt_2.jpg'
     ];
   });
 })();
