@@ -350,9 +350,12 @@ const FISH = [
       origin: "Lai tạo chọn lọc", size: "6–7 cm", promo: "Không có", contactText: "", combo: {3:247000,5:241000,10:215000}, gallery: ["assets/img/c_a_valentine_1.jpg", "assets/img/c_a_valentine_2.jpg"]
     },
 {
-      vn: "Cá Đĩa Xanh Cobalt", en: "Cobalt Blue Discus", img: "c_a_xanh_cobalt_1.jpg", photo: true, price: 210000,
+      vn: "Cá Đĩa Xanh Cobalt", en: "Cobalt Blue Discus", img: "xanh cobalt 1.webp", photo: true, price: 210000,
       desc: "Cá Đĩa Xanh Cobalt (Symphysodon aequifasciatus, dòng Cobalt Blue LN) là dòng cá đĩa lai tạo nổi bật với sắc xanh cobalt rực rỡ. Cá hiền, thích hợp bể rộng nhiều cây, ánh sáng dịu, nước mềm ấm 28–31°C. Nên nuôi nhóm từ 5 con trở lên.",
-      origin: "Lai tạo chọn lọc", size: "6–7 cm", promo: "Không có", contactText: "", combo: {3:190000,5:185000,10:165000}, gallery: ["assets/img/c_a_xanh_cobalt_1.jpg", "assets/img/c_a_xanh_cobalt_2.jpg"]
+      origin: "Lai tạo chọn lọc", size: "6–7 cm", promo: "Không có", contactText: "", combo: {3:190000,5:185000,10:165000}, gallery: [
+  "assets/img/xanh cobalt 1.webp",
+  "assets/img/xanh cobalt 2.jpg"
+]
     },
 {
       vn: "Cá Đĩa Beo Bi", en: "Leopard Discus", img: "c_a_beo_bi_el_1.jpg", photo: true, price: 396000,
