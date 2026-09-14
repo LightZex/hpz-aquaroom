@@ -14,7 +14,7 @@
     }
 
     if (/hồng nhung|red velvet longfin|longfin serpae/.test(key)) {
-      f.vn = 'Cá Hồng Nhung Vây Dài';
+      f.vn = 'Cá Hồng Nhung Vây Dài';
       f.en = 'Longfin Serpae Tetra';
       f.category = 'tetra';
       f.cat = 'tetra';
