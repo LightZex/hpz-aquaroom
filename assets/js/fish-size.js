@@ -1,4 +1,4 @@
-/* HPZ Aquaroom - show fish size below description and before price */
+/* HPZ Aquaroom - always show fish size below description */
 (function () {
   function findFish() {
     if (typeof FISH === 'undefined') return null;
@@ -14,13 +14,8 @@
     const fish = findFish();
     const info = detail && detail.querySelector('.detail-info');
     const desc = detail && detail.querySelector('.detail-desc');
-    if (!detail || !fish || !info || !desc || detail.querySelector('.detail-size')) return false;
-
-    const price = detail.querySelector('.detail-price')
-      || Array.from(detail.querySelectorAll('.spec-row')).find(function (row) {
-        return /giá\s*niêm\s*yết/i.test(row.textContent || '');
-      });
-    if (!price) return false;
+    if (!detail || !fish || !info || !desc) return false;
+    if (detail.querySelector('.detail-size')) return true;
 
     const size = document.createElement('div');
     size.className = 'detail-size';
@@ -29,11 +24,10 @@
     size.querySelector('.detail-size__label').style.cssText = 'color:var(--cyan);font-weight:800;min-width:110px;';
     size.querySelector('.detail-size__value').style.cssText = 'color:var(--ink);font-weight:700;';
 
-    if (price.classList.contains('detail-price')) {
-      desc.insertAdjacentElement('afterend', size);
+    const price = detail.querySelector('.detail-price');
+    desc.insertAdjacentElement('afterend', size);
+    if (price && price.classList.contains('detail-price')) {
       info.insertBefore(price, size.nextSibling);
-    } else {
-      price.parentNode.insertBefore(size, price);
     }
     return true;
   }
