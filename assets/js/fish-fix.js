@@ -17,6 +17,12 @@
       f.vn = 'Cá Hồng Nhung Vây Dài';
       f.en = 'Longfin Serpae Tetra';
       f.category = 'tetra';
+      f.cat = 'tetra';
+      f.group = 'tetra';
+      f.type = 'tetra';
+      f.categoryLabel = 'Cá Tetra';
+      f.isDiscus = false;
+      delete f.discus;
       f.desc = 'Cá hồng nhung vây dài (Longfin Serpae Tetra) là một dòng cá cảnh nước ngọt nổi bật với thân màu đỏ cam rực rỡ và bộ vây dài mềm mại. Cá có kích thước nhỏ, tính cách tương đối hiền và thích sống theo đàn, rất phù hợp để nuôi trong các bể thủy sinh. Với màu sắc bắt mắt cùng những chuyển động uyển chuyển của bộ vây, cá hồng nhung vây dài là lựa chọn lý tưởng cho người yêu thích vẻ đẹp sinh động và tự nhiên của bể cá.';
       f.img = 'hong nhung vay dai 1.jpeg';
       f.src = 'assets/img/hong nhung vay dai 1.jpeg';
