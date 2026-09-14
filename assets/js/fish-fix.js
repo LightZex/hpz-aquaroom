@@ -32,6 +32,15 @@
       ];
     }
 
+    if (/mương hoa lục an|lục an zacco|luclan/.test(key)) {
+      f.img = 'luclan_1.jpg';
+      f.src = 'assets/img/luclan_1.jpg';
+      f.gallery = [
+        'assets/img/luclan_1.jpg',
+        'assets/img/luclan_2.jpg'
+      ];
+    }
+
     if (Array.isArray(f.gallery) && f.gallery.length && f.gallery[0]) {
       f.src = f.gallery[0];
     }
