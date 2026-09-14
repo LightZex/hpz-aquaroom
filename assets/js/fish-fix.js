@@ -31,6 +31,10 @@
         'assets/img/hong nhung vay dai 2.jpeg'
       ];
     }
+
+    if (Array.isArray(f.gallery) && f.gallery.length && f.gallery[0]) {
+      f.src = f.gallery[0];
+    }
   });
 
   document.addEventListener('DOMContentLoaded', function () {
