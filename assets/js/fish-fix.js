@@ -32,4 +32,29 @@
       ];
     }
   });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const detail = document.getElementById('detail-root');
+    if (!detail) return;
+
+    const q = new URLSearchParams(location.search).get('fish') || '';
+    const ql = q.toLowerCase();
+    const fish = FISH.find(function (f) { return (f.en || '').toLowerCase() === ql; })
+      || FISH.find(function (f) { return (f.en || '').toLowerCase().includes(ql); })
+      || FISH.find(function (f) { return (f.vn || '').toLowerCase().includes(ql); });
+    const info = detail.querySelector('.detail-info');
+    const desc = detail.querySelector('.detail-desc');
+    const price = detail.querySelector('.detail-price');
+    if (!fish || !info || !desc || !price || detail.querySelector('.detail-size')) return;
+
+    const size = document.createElement('div');
+    size.className = 'detail-size';
+    size.innerHTML = '<span class="detail-size__label">Size</span><span class="detail-size__value">' + (fish.size || 'Liên hệ để được tư vấn size') + '</span>';
+    size.style.cssText = 'display:flex;align-items:center;gap:12px;margin:-8px 0 14px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2);';
+    size.querySelector('.detail-size__label').style.cssText = 'color:var(--cyan);font-weight:800;min-width:44px;';
+    size.querySelector('.detail-size__value').style.cssText = 'color:var(--ink);font-weight:700;';
+
+    desc.insertAdjacentElement('afterend', size);
+    info.insertBefore(price, size.nextSibling);
+  });
 })();
