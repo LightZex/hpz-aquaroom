@@ -41,6 +41,24 @@
       ];
     }
 
+    if (/cá chuột mỹ|united states cory|chuột mỹ/.test(key)) {
+      f.img = 'c_chu_t_m_1.jpg';
+      f.src = 'assets/img/c_chu_t_m_1.jpg';
+      f.gallery = [
+        'assets/img/c_chu_t_m_1.jpg',
+        'assets/img/c_chu_t_m_2.jpg'
+      ];
+    }
+
+    if (/mương hoa chiết giang|opsariichthys evolans|chiết giang/.test(key)) {
+      f.img = 'muonghoa_1.jpg';
+      f.src = 'assets/img/muonghoa_1.jpg';
+      f.gallery = [
+        'assets/img/muonghoa_1.jpg',
+        'assets/img/muonghoa_2.jpg'
+      ];
+    }
+
     if (Array.isArray(f.gallery) && f.gallery.length && f.gallery[0]) {
       f.src = f.gallery[0];
     }
